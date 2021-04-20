@@ -28,6 +28,32 @@ ADD sources.list /etc/apt/
 ```
 ------
 
+### docker-compose 安装部署
+```shell
+# 启动discuz容器
+docker run --name discuz -p 8090:80 -d tencentci/discuz
+
+# 拷贝容器内/var/www/html目录下的内容
+mkdir data
+docker cp discuz:/var/www/html ./data
+
+# 关闭discuz容器
+docker stop discuz && docker rm discuz
+
+```
+```yaml
+version: '3.1'
+services:
+  discuz:
+    restart: always
+    image: tencentci/discuz:latest
+    container_name: discuz
+    #privileged: true
+    ports:
+      - 30001:80
+    volumes:
+      - ./data/html:/var/www/html
+```
 ### 二、最新Discuz X3.5+说明
 相对于3.4版本，做了以下修改：
 
